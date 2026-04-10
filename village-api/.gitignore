@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.local
+dist/
+.vercel/
+*.log
+prisma/migrations/
+frontend/node_modules/
+frontend/dist/
+.vercel

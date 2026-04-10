@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand: #14b8a6;
+    --brand-dark: #0d9488;
+    --surface: #0a0f0e;
+    --surface-50: #111918;
+    --surface-100: #162220;
+    --surface-200: #1c2e2b;
+    --text-primary: #f0fdf9;
+    --text-secondary: #94a3b8;
+    --border: rgba(20, 184, 166, 0.15);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--surface);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Sora', sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-500 hover:bg-brand-400 text-surface font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 text-sm;
+    font-family: 'Sora', sans-serif;
+  }
+
+  .btn-secondary {
+    @apply bg-surface-100 hover:bg-surface-200 text-brand-300 border border-brand-500/20 hover:border-brand-500/40 font-medium px-5 py-2.5 rounded-lg transition-all duration-200 text-sm;
+  }
+
+  .btn-danger {
+    @apply bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm;
+  }
+
+  .card {
+    @apply bg-surface-50 border border-brand-500/10 rounded-xl p-5;
+  }
+
+  .card-hover {
+    @apply card hover:border-brand-500/30 transition-all duration-200;
+  }
+
+  .input {
+    @apply bg-surface-100 border border-brand-500/20 focus:border-brand-500/60 placeholder-slate-500 rounded-lg px-4 py-2.5 text-sm w-full outline-none transition-all duration-200;
+    color: #f0fdf9;
+  }
+
+  .label {
+    @apply text-xs font-medium text-slate-400 uppercase tracking-wider mb-1.5 block;
+    font-family: 'Sora', sans-serif;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+    font-family: 'Sora', sans-serif;
+  }
+
+  .badge-green { @apply badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20; }
+  .badge-yellow { @apply badge bg-yellow-500/10 text-yellow-400 border border-yellow-500/20; }
+  .badge-red { @apply badge bg-red-500/10 text-red-400 border border-red-500/20; }
+  .badge-blue { @apply badge bg-blue-500/10 text-blue-400 border border-blue-500/20; }
+  .badge-gray { @apply badge bg-slate-500/10 text-slate-400 border border-slate-500/20; }
+  .badge-teal { @apply badge bg-brand-500/10 text-brand-400 border border-brand-500/20; }
+
+  .stat-card {
+    @apply card flex flex-col gap-2;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 text-slate-400 hover:text-brand-300 hover:bg-brand-500/5;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-item.active {
+    @apply bg-brand-500/10 text-brand-300 border border-brand-500/20;
+  }
+
+  .table-header {
+    @apply text-xs font-semibold text-slate-500 uppercase tracking-wider;
+    font-family: 'Sora', sans-serif;
+  }
+
+  .table-cell {
+    @apply text-sm text-slate-300 py-3 px-4;
+  }
+
+  .table-row {
+    @apply border-b border-brand-500/5 hover:bg-brand-500/5 transition-colors;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(20, 184, 166, 0.2) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(20, 184, 166, 0.2); border-radius: 2px; }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+.animate-slideIn { animation: slideIn 0.3s ease-out; }
+.animate-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
+
+/* Grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(20,184,166,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,184,166,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}

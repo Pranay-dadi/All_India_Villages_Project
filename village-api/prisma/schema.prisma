@@ -1,0 +1,165 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Country {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  states    State[]
+}
+
+model State {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  countryId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  country   Country  @relation(fields: [countryId], references: [id])
+  districts District[]
+  userAccess UserStateAccess[]
+
+  @@index([code])
+  @@index([name])
+}
+
+model District {
+  id           String        @id @default(cuid())
+  code         String
+  name         String
+  stateId      String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  state        State         @relation(fields: [stateId], references: [id])
+  subDistricts SubDistrict[]
+
+  @@unique([code, stateId])
+  @@index([stateId])
+  @@index([name])
+}
+
+model SubDistrict {
+  id         String    @id @default(cuid())
+  code       String
+  name       String
+  districtId String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  district   District  @relation(fields: [districtId], references: [id])
+  villages   Village[]
+
+  @@unique([code, districtId])
+  @@index([districtId])
+  @@index([name])
+}
+
+model Village {
+  id            String      @id @default(cuid())
+  code          String
+  name          String
+  subDistrictId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  subDistrict   SubDistrict @relation(fields: [subDistrictId], references: [id])
+
+  @@unique([code, subDistrictId])
+  @@index([subDistrictId])
+  @@index([name])
+}
+
+enum PlanType {
+  FREE
+  PREMIUM
+  PRO
+  UNLIMITED
+}
+
+enum UserStatus {
+  PENDING_APPROVAL
+  ACTIVE
+  SUSPENDED
+  REJECTED
+}
+
+model User {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  businessName String
+  gstNumber    String?
+  phone        String
+  planType     PlanType    @default(FREE)
+  status       UserStatus  @default(PENDING_APPROVAL)
+  isAdmin      Boolean     @default(false)
+  notes        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  lastActiveAt DateTime?
+  apiKeys      ApiKey[]
+  apiLogs      ApiLog[]
+  stateAccess  UserStateAccess[]
+
+  @@index([email])
+  @@index([status])
+  @@index([planType])
+}
+
+model UserStateAccess {
+  id        String   @id @default(cuid())
+  userId    String
+  stateId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  state     State    @relation(fields: [stateId], references: [id])
+
+  @@unique([userId, stateId])
+  @@index([userId])
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  key        String    @unique
+  secretHash String
+  userId     String
+  isActive   Boolean   @default(true)
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiLogs    ApiLog[]
+
+  @@index([key])
+  @@index([userId])
+}
+
+model ApiLog {
+  id           String   @id @default(cuid())
+  apiKeyId     String
+  userId       String
+  endpoint     String
+  method       String
+  statusCode   Int
+  responseTime Int
+  ipAddress    String
+  userAgent    String?
+  queryParams  Json?
+  createdAt    DateTime @default(now())
+  apiKey       ApiKey   @relation(fields: [apiKeyId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([apiKeyId])
+  @@index([statusCode])
+}
