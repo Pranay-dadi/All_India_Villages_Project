@@ -1,5 +1,7 @@
 # VillageAPI — India's Village Data Platform
 
+Deployed Url On Vercel - https://village-h3zlep68l-pranay-dadis-projects.vercel.app/
+
 Production-grade SaaS REST API for India's complete village-level geographical data.
 
 ---
