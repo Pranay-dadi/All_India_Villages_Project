@@ -1,6 +1,7 @@
 # VillageAPI — India's Village Data Platform
 
 Deployed Url On Vercel - https://village-h3zlep68l-pranay-dadis-projects.vercel.app/
+Now login as admin or business. If account not created then create account using register. Also use API URL based on the vercerl app url.
 
 Production-grade SaaS REST API for India's complete village-level geographical data.
 
